@@ -30,3 +30,8 @@ def login_view(request):
         errors = form.get_errors()
         return restful.params_error(message=errors)
 
+# 注册
+def register_view(request):
+    pass
+
+
