@@ -21,4 +21,9 @@
  4 配置好时区
  5 配置好模板的static标签
 
-需要安装 mysqlclient  pymysql
+5 需要安装
+ 1 mysqlclient  # 操作数据库
+ 2 pymysql   # 操作数据库
+ 3 pillow   # 验证码
+ 4 django-redis  # 用来做为缓存
+ 5 aliyun-python-sdk-core  # 阿里云短信服务API

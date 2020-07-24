@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>千锋学生后台管理系统|登录</title>
+    <title>学生后台管理系统|登录</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -37,7 +37,7 @@
     <div class="login-box-body">
         <p class="login-box-msg">请登录</p>
 
-        <form action="{% url 'qfauth:login' %}" method="post">
+        <form action="{% url 'cmsauth:login' %}" method="post">
             {% csrf_token %}
             <div class="form-group has-feedback">
                 <input type="text" class="form-control" name="telephone" placeholder="请输入手机号码">

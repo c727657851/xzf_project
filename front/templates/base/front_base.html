@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{% csrf_token %}">
+{#    <link rel="icon" href="{% static 'images/favicon.ico' %}" >#}
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="//at.alicdn.com/t/font_681895_q7ptjm0r8n.css">
     <link rel="stylesheet" href="{% static 'css/common/auth.min.css' %}">
@@ -24,7 +25,7 @@
                 <li><a href="">创业课堂</a></li>
                 <li><a href="#">付费资讯</a></li>
 {#                <li><a href="{% url 'search' %}">搜索</a></li>#}
-                <li><a href="/search/">搜索</a></li>
+                <li><a href="#">搜索</a></li>
             </ul>
 
             <div class="auth-box">
@@ -37,7 +38,7 @@
                             {% if user.is_staff %}
                                  <a href="{% url 'cms:index' %}">管理系统</a>
                             {% endif %}
-                                <a href="{% url 'qfauth:logout' %}">退出登录</a>
+                                <a href="">退出登录</a>
 
                     </div>
                     {% else %}
@@ -132,7 +133,7 @@
                                     <input type="text" class="form-control" name="img_captcha" placeholder="图形验证码">
                                 </div>
                                 <div class="input-group-addon">
-                                    <img src="" alt="" class="img-captcha" style="cursor:pointer;">
+                                    <img src="{% url 'cmsauth:image_captcha' %}" alt="" class="img-captcha" style="cursor:pointer;">
                                 </div>
                             </div>
                             <div class="input-group">
