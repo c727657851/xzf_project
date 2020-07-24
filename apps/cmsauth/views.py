@@ -3,8 +3,9 @@ from django.http import HttpResponse
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from .forms import LoginForm
+from .forms import LoginForm,RegisterForm
 from utils import restful
+from .models import User
 
 @require_POST
 def login_view(request):
@@ -32,6 +33,16 @@ def login_view(request):
 
 # 注册 的视图函数  
 def register_view(request):
-    pass
+    form = RegisterForm(request.POST)
+    if form.is_valid():
+        telephone = form.cleaned_data.get('telephone')
+        username = form.cleaned_data.get('username')
+        email = form.cleaned_data.get('email')
+        password = form.cleaned_data.get('password1')
+        user = User.objects.create_user(telephone=telephone,username=username,password=password,email=email)
+        return restful.success()
+    else:
+        return restful.params_error(message='注册失败')
+
 
 
