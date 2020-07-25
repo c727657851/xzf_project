@@ -46,6 +46,8 @@ def register_view(request):
         return restful.success()
     else:
         return restful.params_error(message=form.get_errors())
+def logout_view(request):
+    pass
 
 
 # 图形验证码
@@ -60,15 +62,17 @@ def image_captcha(request):
     response = HttpResponse(content_type='image/png')
     response.write(out.read())
     response['Content-length'] = out.tell()
-    cache.set(text.lower(),text.lower(),2*60)  # 缓存中一份   用于做对比
+    cache.set(text.lower(), text.lower(), 2*60)  # 缓存中一份   用于做对比
     return response
 
 def sms_captcha(request):
     code = Captcha.gene_num(number=6)  # 生成随机数字 六位
     print(code)
+
     # 接收手机号
     #/sms_captcha/?telephone=
     telephone = request.GET.get('telephone')
+    cache.set(telephone,code,2*60)  # 两分钟有效
     send_sms(telephone,code)
     # 调用第三方发送短信验证码接口
     return restful.success()

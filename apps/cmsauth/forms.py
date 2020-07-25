@@ -27,6 +27,7 @@ class RegisterForm(forms.Form,FormMixin):
         if not cache_image_captcha or image_captcha != cache_image_captcha.lower():
             raise forms.ValidationError('图形验证码输入有误!')
 
+
         if password1 != password2:
             raise forms.ValidationError('两次密码输入不一致')
 
@@ -34,6 +35,11 @@ class RegisterForm(forms.Form,FormMixin):
 
         if User.objects.filter(telephone=telephone).exists():
             raise forms.ValidationError('该手机号已经被注册')
+
+        sms_captcha = cleaned_data.get('sms_captcha')  # 用户输入的短信验证码
+        cache_sms_captcha = cache.get('telephone')   # cache中的图形中的数字 根据输入的数字作为键
+        if not cache_sms_captcha or sms_captcha != cache_sms_captcha:
+            raise forms.ValidationError('短信验证码输入有误!')
 
         return cleaned_data
 
