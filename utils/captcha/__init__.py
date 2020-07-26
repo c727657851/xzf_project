@@ -71,6 +71,8 @@ class Captcha(object):
 
     # 随机数字列表  用于生成短信验证码
     S = list(string.digits)
+    for index in range(0, 10):
+        S.append(str(index))
     # 生成随机数字
     @classmethod
     def gene_num(cls, number):

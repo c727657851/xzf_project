@@ -91,15 +91,15 @@
                         <span>首页</span>
                     </a>
                 </li>
-                    {% if perms.news.change_news %}
+{#                    {% if perms.news.change_news %}#}
                     <li class="header">新闻管理</li>
                     <li>
-{#                        <a href="{% url 'cms:news_list' %}">#}
+                        <a href="{% url 'cms:news_list' %}">
                             <i class="fa fa-list"></i>
                             <span>新闻列表</span>
                         </a>
                     </li>
-                    {% endif %}
+{#                    {% endif %}#}
                     {% if perms.news.add_news %}
                     <li>
                         <a href="{% url 'cms:write_news' %}">

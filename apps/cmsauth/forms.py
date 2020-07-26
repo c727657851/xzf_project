@@ -22,14 +22,14 @@ class RegisterForm(forms.Form,FormMixin):
         password1 = cleaned_data.get('password1')
         password2 = cleaned_data.get('password2')
 
-        image_captcha = cleaned_data.get('image_captcha')  # 用户输入的验证码
-        cache_image_captcha = cache.get(image_captcha.lower())   # cache中的图形中的数字 根据输入的数字作为键
-        if not cache_image_captcha or image_captcha != cache_image_captcha.lower():
-            raise forms.ValidationError('图形验证码输入有误!')
-
-
         if password1 != password2:
             raise forms.ValidationError('两次密码输入不一致')
+
+        image_captcha = cleaned_data.get('image_captcha')  # 用户输入的验证码
+        cached_image_captcha = cache.get(image_captcha.lower())   # cache中的图形中的数字 根据输入的数字作为键
+        if not cached_image_captcha or image_captcha != cached_image_captcha.lower():
+            raise forms.ValidationError('图形验证码输入有误!')
+
 
         telephone = cleaned_data.get('telephone')
 
@@ -37,8 +37,8 @@ class RegisterForm(forms.Form,FormMixin):
             raise forms.ValidationError('该手机号已经被注册')
 
         sms_captcha = cleaned_data.get('sms_captcha')  # 用户输入的短信验证码
-        cache_sms_captcha = cache.get('telephone')   # cache中的图形中的数字 根据输入的数字作为键
-        if not cache_sms_captcha or sms_captcha != cache_sms_captcha:
+        cached_sms_captcha = cache.get('telephone')   # cache中的图形中的数字 根据输入的数字作为键
+        if not cached_sms_captcha or sms_captcha != cached_sms_captcha:
             raise forms.ValidationError('短信验证码输入有误!')
 
         return cleaned_data

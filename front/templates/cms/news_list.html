@@ -1,5 +1,5 @@
 {% extends 'cms/base.html' %}
-{% load tmp_filter %}
+
 
 {% block title %}
     新闻列表
@@ -90,10 +90,10 @@
                         <tr>
                             <td><a target="_blank" href="#">{{ news.title }}</a></td>
                             <td>{{ news.category.name }}</td>
-                            <td>{{ news.pub_time|time_format }}</td>
+                            <td>{{ news.pub_time }}</td>
                             <td>{{ news.author.username }}</td>
                             <td>
-                                <a href="{% url 'cms:edit_news' %}?news_id={{ news.pk }}" class="btn btn-info btn-xs">编辑</a>
+                                <a href="" class="btn btn-info btn-xs">编辑</a>
                                 <button class="btn btn-danger btn-xs delete-btn" data-news-id="{{ news.pk }}">删除</button>
                             </td>
                         </tr>
@@ -102,7 +102,7 @@
             </table>
         </div>
         <div class="box-footer">
-            <p class="pull-left">第{{ current_number }}页/总共{{ num_pages }}页</p>
+            <p class="pull-left">第{{ current_page }}页/总共{{ number_pages }}页</p>
             <ul class="pagination pull-right">
                 {#上一页#}
                 {% if page_obj.has_previous %}
@@ -123,7 +123,7 @@
                 {% endfor %}
 
                 {# 当前的页面 #}
-                <li class="active"><a href="?p={{ current_number }}{{ url_query }}">{{ current_number }}</a></li>
+                <li class="active"><a href="?p={{ current_page }}{{ url_query }}">{{ current_page }}</a></li>
 
                 {# 右边的页码 #}
                 {% for right_page in right_pages %}
@@ -133,7 +133,7 @@
                 {# 用来控制右边三个点 #}
                 {% if right_has_more %}
                     <li><a href="javascript:void(0);">...</a></li>
-                    <li><a href="?p={{ num_pages }}{{ url_query }}">{{ num_pages }}</a></li>
+                    <li><a href="?p={{ number_pages }}{{ url_query }}">{{ number_pages }}</a></li>
                 {% endif %}
 
                 {#下一页#}

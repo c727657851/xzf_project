@@ -38,7 +38,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     # 导入from shortuuidfield import ShortUUIDField
     uid = ShortUUIDField(primary_key=True)
     telephone = models.CharField(max_length=11,unique=True, validators=[validators.RegexValidator(r'1[3-9]\d{9}', message='请输入正确的手机号')])
-    email = models.EmailField(null=True,unique=True)
+    email = models.EmailField(null=True)
     username = models.CharField(max_length=100,unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect,reverse
 from django.http import HttpResponse
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
@@ -18,6 +18,7 @@ def login_view(request):
         telephone = form.cleaned_data.get('telephone')
         password = form.cleaned_data.get('password')
         remember = form.cleaned_data.get('remember')
+
         user = authenticate(request, username=telephone,password=password)
         if user:
             if user.is_active:
@@ -26,6 +27,7 @@ def login_view(request):
                     request.session.set_expiry(None)  # 默认保存两周
                 else:
                     request.session.set_expiry(0)
+
                 return restful.success()
             else:
                 return restful.unauth(message='您的账号未激活')
@@ -47,7 +49,8 @@ def register_view(request):
     else:
         return restful.params_error(message=form.get_errors())
 def logout_view(request):
-    pass
+    logout(request)
+    return redirect(reverse('index'))
 
 
 # 图形验证码
@@ -62,7 +65,7 @@ def image_captcha(request):
     response = HttpResponse(content_type='image/png')
     response.write(out.read())
     response['Content-length'] = out.tell()
-    cache.set(text.lower(), text.lower(), 2*60)  # 缓存中一份   用于做对比
+    cache.set(text.lower(), text.lower(), 5*60)  # 缓存中一份   用于做对比
     return response
 
 def sms_captcha(request):
@@ -72,7 +75,8 @@ def sms_captcha(request):
     # 接收手机号
     #/sms_captcha/?telephone=
     telephone = request.GET.get('telephone')
-    cache.set(telephone,code,2*60)  # 两分钟有效
-    send_sms(telephone,code)
+    cache.set(telephone,code,5*60)  # 两分钟有效
+    print('cache中的验证码',cache.get(telephone))
+    # send_sms(telephone,code)
     # 调用第三方发送短信验证码接口
     return restful.success()

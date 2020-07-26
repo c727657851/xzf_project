@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'apps.cmsauth',
     'apps.cms',
     'apps.news',
+    'apps.ueditor',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -49,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',  # 同源策略
 ]
 
 ROOT_URLCONF = 'xfz_project.urls'
@@ -144,3 +146,19 @@ CACHES = {
         }
     }
 }
+
+# Qiniu配置
+QINIU_ACCESS_KEY = 'UGn4NbCEOYgQ4mAa40VSoKf2CF5UtpDGhrDyMrNG'
+QINIU_SECRET_KEY = 'VVB7j9NWeegSrO8uccmqPh4620OmFi6gCSprboO1'
+QINIU_BUCKET_NAME = 'cuizhihao'
+QINIU_DOMAIN = 'http://qe0l8lesp.bkt.clouddn.com/'
+
+# UEditor配置
+UEDITOR_UPLOAD_TO_QINIU = True
+UEDITOR_QINIU_ACCESS_KEY = QINIU_ACCESS_KEY
+UEDITOR_QINIU_SECRET_KEY = QINIU_SECRET_KEY
+UEDITOR_QINIU_BUCKET_NAME = QINIU_BUCKET_NAME
+UEDITOR_QINIU_DOMAIN = QINIU_DOMAIN
+
+
+ONE_PAGE_NEWS_COUNT = 2 # 限定首页刚开始显示几条

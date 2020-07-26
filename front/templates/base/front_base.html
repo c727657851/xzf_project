@@ -10,6 +10,7 @@
     <script src="{% static 'js/message.min.js' %}"></script>
     <script src="{% static 'js/qfajax.min.js' %}"></script>
     <script src="{% static 'js/front_base.min.js' %}"></script>
+
     {% block head %}{% endblock %}
 </head>
 <body>
@@ -32,12 +33,14 @@
                     {% if user.is_authenticated  %}
 
                     <a href="#" class="authenticated-box">{{ user.username }}</a>
+                    <a href="{% url 'cmsauth:logout' %}">退出登录</a>
                     <div class="user-more-box">
                         <i class="triangle"></i>
                             {% if user.is_staff %}
                                  <a href="{% url 'cms:index' %}">管理系统</a>
+                                 <a href="{% url 'cmsauth:logout' %}">退出登录</a>
                             {% endif %}
-                                <a href="">退出登录</a>
+
 
                     </div>
                     {% else %}

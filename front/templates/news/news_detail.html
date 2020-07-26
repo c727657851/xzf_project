@@ -1,5 +1,5 @@
 {% extends 'base/front_base.html' %}
-{% load tmp_filter %}
+{#{% load tmp_filter %}#}
 
 {% block title %}
     新闻详情页
@@ -32,7 +32,7 @@
                     <div class="news-info">
                         <div class="info-group">
                             <span class="author">{{ news.author.username }}</span>
-                            <span class="pub-time">{{ news.pub_time|time_since }}</span>
+                            <span class="pub-time">{{ news.pub_time }}</span>
                             <span class="category">{{ news.category.name }}</span>
                         </div>
                         <div class="share-group">
@@ -57,7 +57,7 @@
                                 <div class="comment-info">
                                     <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528129845916&di=536993042d5223862f8c4ab157ba6e72&imgtype=0&src=http%3A%2F%2Fpic1.ipadown.com%2Fimgs%2F201206120933354195.jpg" alt="" class="avatar">
                                     <span class="author">{{ comment.author.username }}</span>
-                                    <span class="pub-time">{{ comment.pub_time|time_since }}</span>
+                                    <span class="pub-time">{{ comment.pub_time}}</span>
                                 </div>
                                 <p class="comment-content">{{ comment.content }}</p>
                             </li>
