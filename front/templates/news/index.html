@@ -7,6 +7,34 @@
     <script src="{% static 'arttemplate/template-web.js' %}"></script>
     <script src="{% static 'js/index.min.js' %}"></script>
     {# 这个区域用来显示  ajax异步返回的 json信息   为了 防止 变量标签跟django模板引擎冲突 我们使用{% verbatim %} {% endverbatim %} 给它包裹起来#}
+
+{#引用其他的模板引擎#}
+<script id="news-item" type="text/html">
+    {% verbatim %}
+    {{ each newes news index }}
+    <li>
+        <div class="thumbnail-group">
+            <a href="/{{ news.id }}">
+                <img src="{{ news.thumbnail }}" alt="">
+            </a>
+        </div>
+        <div class="news-group">
+            <p class="title">
+                <a href="/{{ news.id }}">{{ news.title }}</a>
+            </p>
+            <p class="desc">
+                {{ news.desc }}
+            </p>
+            <p class="more">
+                <span class="category">{{ news.category.name }}</span>
+                <span class="pub-time">{{ news.pub_time  }} </span>
+                <span class="author">{{ news.author.username }}</span>
+            </p>
+        </div>
+    </li>
+    {{ /each }}
+    {% endverbatim %}
+</script>
 {% endblock %}
 
 {% block main %}

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{% block title %}{% endblock %} | 学生管理系统</title>
+    <title>{% block title %}{% endblock %} | 小饭桌管理系统</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="stylesheet" href="{% static 'adminlte/bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'adminlte/bower_components/font-awesome/css/font-awesome.min.css' %}">
@@ -28,7 +28,7 @@
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>CMS</b></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg">python后台管理系统</span>
+            <span class="logo-lg">小饭桌后台</span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -43,7 +43,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="https://tva4.sinaimg.cn/crop.0.2.636.636.180/88c30c5egw1e7ik7e3k6nj20hs0hswgv.jpg"
                                  class="user-image" alt="User Image">
-                            <span class="hidden-xs">高海杰</span>
+                            <span class="hidden-xs">{{ user.username }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
@@ -51,17 +51,17 @@
                                 <img src="https://tva4.sinaimg.cn/crop.0.2.636.636.180/88c30c5egw1e7ik7e3k6nj20hs0hswgv.jpg"
                                      class="img-circle" alt="User Image">
                                 <p>
-                                    kangbazi
+                                    {{ user.username }}
                                     <small>Python web开发工程师</small>
                                 </p>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">个人中心</a>
+                                    <a href="{% url 'cmsauth:profile' %}" class="btn btn-default btn-flat">个人中心</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="{% url 'cmsauth:logout' %}" class="btn btn-default btn-flat">退出登录</a>
+                                    <a href="{% url 'cms:my_login' %}" class="btn btn-default btn-flat">退出登录</a>
                                 </div>
                             </li>
                         </ul>
@@ -91,7 +91,7 @@
                         <span>首页</span>
                     </a>
                 </li>
-{#                    {% if perms.news.change_news %}#}
+                    {% if perms.news.change_news %}
                     <li class="header">新闻管理</li>
                     <li>
                         <a href="{% url 'cms:news_list' %}">
@@ -99,7 +99,7 @@
                             <span>新闻列表</span>
                         </a>
                     </li>
-{#                    {% endif %}#}
+                    {% endif %}
                     {% if perms.news.add_news %}
                     <li>
                         <a href="{% url 'cms:write_news' %}">
@@ -137,7 +137,7 @@
                     {% if user.is_superuser %}
                     <li class="header">员工管理</li>
                     <li>
-{#                        <a href="{% url 'cms:staffs' %}">#}
+                        <a href="{% url 'cms:staffs' %}">
                             <i class="fa fa-group"></i>
                             <span>员工管理</span>
                         </a>
@@ -153,10 +153,6 @@
         <section class="content">
             {% block content %}{% endblock %}
         </section>
-    </div>
-    <footer class="main-footer">
-        <strong>python</strong>后台管理系统
-    </footer>
-</div>
+
 </body>
 </html>

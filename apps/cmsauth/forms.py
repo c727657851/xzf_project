@@ -43,3 +43,6 @@ class RegisterForm(forms.Form,FormMixin):
 
         return cleaned_data
 
+class EmailForm(forms.Form,FormMixin):
+    telephone = forms.CharField(max_length=11,validators=[validators.RegexValidator(r'1[3-9]\d{9}',message='请输入正确的手机号')])
+    email = forms.EmailField()

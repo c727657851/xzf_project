@@ -4,15 +4,15 @@ import string
 # ImageDraw：一个画笔
 # ImageFont:画笔的字体
 from PIL import Image,ImageDraw,ImageFont
-# pip install pillow
+
 
 # Captcha验证码
 
 class Captcha(object):
     # 生成几位数的验证码
-    number = 6
+    number = 5
     # 验证码图片的宽度和高度
-    size = (100,30)
+    size = (100,38)
     # 验证码字体大小
     fontsize = 25
     # 加入干扰线的条数

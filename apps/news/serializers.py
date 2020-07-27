@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import News,NewsCategory
+from .models import News,NewsCategory,Comment
 from apps.cmsauth.serializers import UserSerializers
 
 class NewsCategorySerializer(serializers.ModelSerializer):
@@ -14,4 +14,11 @@ class NewsSerializers(serializers.ModelSerializer):
     class Meta:
         model = News
         fields = ('id','title','desc','thumbnail','pub_time','author','category')
+
+
+class CommentSerializers(serializers.ModelSerializer):
+    author = UserSerializers()
+    class Meta:
+        model = Comment
+        fields = ('id','content','pub_time','author')
 

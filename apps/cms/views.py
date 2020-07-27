@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect,reverse
 from django.views.generic import View
 from apps.news.models import NewsCategory,News
 from utils import restful
@@ -9,12 +9,46 @@ from django.core.paginator import Paginator
 from datetime import datetime
 from django.utils.timezone import make_aware
 from urllib import parse
+from django.utils.decorators import method_decorator  #权限装饰器
+from django.contrib.auth.decorators import permission_required
+
+from apps.cmsauth.forms import LoginForm
+from django.contrib.auth import login,authenticate
 # Create your views here.
 
 def index(request):
     return render(request,'cms/index.html')
 
+
+@require_POST
+def login_view(request):
+    form = LoginForm(request.POST)
+    if form.is_valid():
+        telephone = form.cleaned_data.get('telephone')
+        password = form.cleaned_data.get('password')
+        remember = form.cleaned_data.get('remember')
+
+        user = authenticate(request, username=telephone,password=password)
+        if user:
+            if user.is_active:
+                login(request,user)
+                if remember:
+                    request.session.set_expiry(None)  # 默认保存两周
+                else:
+                    request.session.set_expiry(0)
+
+                return redirect(reverse('cms:index'))
+            else:
+                return restful.unauth(message='您的账号未激活')
+        else:
+            return restful.params_error(message='手机号或者密码错误')
+    else:
+        errors = form.get_errors()
+        return restful.params_error(message=errors)
+
+
 # 列出文章
+@method_decorator(permission_required(perm="news.view_news",login_url='/'),name='dispatch')   # 前面是模型的名字
 class NewsList(View):
     def get(self,request):
         page = int(request.GET.get('p',1))
@@ -93,7 +127,7 @@ class NewsList(View):
 def my_login(request):
     return render(request,'cms/login.html')
 
-
+@method_decorator(permission_required(perm="news.add_news",login_url='/'),name='dispatch')   # 前面是模型的名字
 class WriteNews(View):
     def get(self,request):
         categories = NewsCategory.objects.all()
@@ -118,7 +152,7 @@ class WriteNews(View):
 
 
 
-
+@permission_required(perm='news_view_newscategory',login_url='/')
 def news_category(request):
     categories = NewsCategory.objects.all()
     context = {
@@ -126,6 +160,7 @@ def news_category(request):
     }
     return render(request,'cms/news_category.html', context=context)
 
+@permission_required(perm='news.add_newscategory',login_url='/')
 def add_news_category(request):
     name = request.POST.get('name')
     exists = NewsCategory.objects.filter(name=name).exists()

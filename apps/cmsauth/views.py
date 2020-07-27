@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from .forms import LoginForm,RegisterForm
+from .forms import LoginForm,RegisterForm,EmailForm
 from utils import restful
 from .models import User
 from utils.captcha import Captcha  # 导入验证码类库
@@ -50,7 +50,23 @@ def register_view(request):
         return restful.params_error(message=form.get_errors())
 def logout_view(request):
     logout(request)
-    return redirect(reverse('index'))
+    return redirect(reverse('news:index'))
+
+# 个人中心
+def profile(request):
+    return render(request,'cms/profile.html')
+
+# 修改个人资料
+def change_profile(request):
+    form = EmailForm(request.POST)
+    if form.is_valid():
+        telephone = form.cleaned_data.get('telephone')
+        user = User.objects.filter(telephone=telephone).first()
+        user.email = form.cleaned_data.get('email')
+        user.save()
+        return render(request,'cms/profile.html')
+    else:
+        return restful.params_error(message=form.get_errors())
 
 
 # 图形验证码
@@ -69,13 +85,13 @@ def image_captcha(request):
     return response
 
 def sms_captcha(request):
-    code = Captcha.gene_num(number=6)  # 生成随机数字 六位
+    code = Captcha.gene_num()  # 生成随机数字 六位
     print(code)
 
     # 接收手机号
     #/sms_captcha/?telephone=
     telephone = request.GET.get('telephone')
-    cache.set(telephone,code,5*60)  # 两分钟有效
+    # cache.set(telephone,code,5*60)  # 两分钟有效
     print('cache中的验证码',cache.get(telephone))
     # send_sms(telephone,code)
     # 调用第三方发送短信验证码接口

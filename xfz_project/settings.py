@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     'apps.news',
     'apps.ueditor',
     'rest_framework',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',    #  必须在最前面
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -160,5 +162,38 @@ UEDITOR_QINIU_SECRET_KEY = QINIU_SECRET_KEY
 UEDITOR_QINIU_BUCKET_NAME = QINIU_BUCKET_NAME
 UEDITOR_QINIU_DOMAIN = QINIU_DOMAIN
 
+UEDITOR_CONFIG_PATH = os.path.join(BASE_DIR,'front','dist','ueditor','config.json')
 
+INTERNAL_IPS  = ['127.0.0.1']   # 允许哪个IP查看  debug  
 ONE_PAGE_NEWS_COUNT = 2 # 限定首页刚开始显示几条
+
+DEBUG_TOOLBAR_PANELS = [
+     # 代表是哪个django版本
+    'debug_toolbar.panels.versions.VersionsPanel',
+    # 用来计时的，判断加载当前页面总共花的时间
+    'debug_toolbar.panels.timer.TimerPanel',
+    # 读取django中的配置信息
+    'debug_toolbar.panels.settings.SettingsPanel',
+    # 看到当前请求头和响应头信息
+    'debug_toolbar.panels.headers.HeadersPanel',
+    # 当前请求的想信息（视图函数，Cookie信息，Session信息等）
+    'debug_toolbar.panels.request.RequestPanel',
+    # 查看SQL语句
+    'debug_toolbar.panels.sql.SQLPanel',
+    # 静态文件
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    # 模板文件
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    # 缓存
+    'debug_toolbar.panels.cache.CachePanel',
+    # 信号
+    'debug_toolbar.panels.signals.SignalsPanel',
+    # 日志
+    'debug_toolbar.panels.logging.LoggingPanel',
+    # 重定向
+    'debug_toolbar.panels.redirects.RedirectsPanel',
+]
+
+DEBUG_TOOLBAR_CONFIG = {
+
+}

@@ -32,15 +32,14 @@
                 <i class="icon-person iconfont"></i>
                     {% if user.is_authenticated  %}
 
-                    <a href="#" class="authenticated-box">{{ user.username }}</a>
-                    <a href="{% url 'cmsauth:logout' %}">退出登录</a>
-                    <div class="user-more-box">
-                        <i class="triangle"></i>
-                            {% if user.is_staff %}
-                                 <a href="{% url 'cms:index' %}">管理系统</a>
-                                 <a href="{% url 'cmsauth:logout' %}">退出登录</a>
-                            {% endif %}
 
+                    <a href="#" class="authenticated-box">{{ user.username }}</a>
+                        {% if user.is_staff %}
+                            <a href="{% url 'cms:index' %}">| 管理系统 |</a>
+                            <a href="{% url 'cmsauth:logout' %}"> 退出登录 |</a>
+                        {% else %}
+                            <a href="{% url 'cmsauth:logout' %}">| 退出登录 |</a>
+                        {% endif %}
 
                     </div>
                     {% else %}

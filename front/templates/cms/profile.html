@@ -1,0 +1,51 @@
+{% extends 'cms/base.html' %}
+
+{% block title %}
+    个人中心
+{% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content-header %}
+<h1>个人中心</h1>
+{% endblock %}
+
+{% block content %}
+
+    <div class="box-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>用户名</th><td>{{ user.username }}</td>
+                    </tr>
+                    <tr>
+                        <th>手机号</th><td>{{ user.telephone }}</td>
+                    </tr>
+                    <tr>
+                        <th>账号状态</th><td>{{ user.is_active }}</td>
+                    </tr>
+                    <tr>
+                        <th>管理员</th><td>{{ user.is_staff }}</td>
+                    </tr>
+                    <tr>
+                        <th>超级管理员</th><td>{{ user.is_superuser }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>邮箱</th>
+                        <td><form action="{% url 'cmsauth:change_profile' %}" method="post">{% csrf_token %}
+                            <input type="text" name="telephone" value="请输入手机号作为验证身份">
+                            <br><input type="text" name="email" value="{{ user.email }}">
+                            <input type="submit" value="保存"></form>
+                        </td>
+
+                    </tr>
+
+
+                </thead>
+
+            </table>
+        </div>
+{% endblock %}

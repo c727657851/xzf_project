@@ -31,13 +31,13 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="#">学生管理系统</a>
+        <a href="#">小饭桌管理系统</a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
         <p class="login-box-msg">请登录</p>
 
-        <form action="{% url 'cmsauth:login' %}" method="post">
+        <form action="{% url 'cms:MyYogin' %}" method="post">
             {% csrf_token %}
             <div class="form-group has-feedback">
                 <input type="text" class="form-control" name="telephone" placeholder="请输入手机号码">
