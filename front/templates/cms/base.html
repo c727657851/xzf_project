@@ -41,14 +41,14 @@
                 <ul class="nav navbar-nav">
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="https://tva4.sinaimg.cn/crop.0.2.636.636.180/88c30c5egw1e7ik7e3k6nj20hs0hswgv.jpg"
+                            <img src="{{ user.thumbnail }}"
                                  class="user-image" alt="User Image">
                             <span class="hidden-xs">{{ user.username }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="https://tva4.sinaimg.cn/crop.0.2.636.636.180/88c30c5egw1e7ik7e3k6nj20hs0hswgv.jpg"
+                                <img src="{{ user.thumbnail }}"
                                      class="img-circle" alt="User Image">
                                 <p>
                                     {{ user.username }}

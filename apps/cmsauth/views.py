@@ -4,6 +4,7 @@ from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from .forms import LoginForm,RegisterForm,EmailForm
+from django.views.generic import View
 from utils import restful
 from .models import User
 from utils.captcha import Captcha  # 导入验证码类库
@@ -48,51 +49,54 @@ def register_view(request):
         return restful.success()
     else:
         return restful.params_error(message=form.get_errors())
+
 def logout_view(request):
     logout(request)
     return redirect(reverse('news:index'))
 
 # 个人中心
-def profile(request):
-    return render(request,'cms/profile.html')
 
-# 修改个人资料
-def change_profile(request):
-    form = EmailForm(request.POST)
-    if form.is_valid():
-        telephone = form.cleaned_data.get('telephone')
-        user = User.objects.filter(telephone=telephone).first()
-        user.email = form.cleaned_data.get('email')
-        user.save()
+class ProfileView(View):
+    def get(self,request):
         return render(request,'cms/profile.html')
-    else:
-        return restful.params_error(message=form.get_errors())
+
+    def post(self,request):
+        form = EmailForm(request.POST)
+        if form.is_valid():
+            tel = form.cleaned_data.get('tel')
+            user = User.objects.filter(telephone=tel).first()
+            user.thumbnail = form.cleaned_data.get('thumbnail')
+            user.email = form.cleaned_data.get('email')
+            user.save()
+            return restful.success()
+        else:
+            return restful.params_error(message=form.get_errors())
 
 
-# 图形验证码
-def image_captcha(request):
-    text,image = Captcha.gene_graph_captcha()
-    # 图片是一个流数据 也就是存到一个管道中 不像字符串可以用容器保存
-    out = BytesIO()  # 创建一个管道
-    image.save(out,'png')  # 图片保存
-    # 读取时候从0开始读 为了防止读不到数据 指针回0
-    out.seek(0)  # 指针回0
-    # 把图片返回到浏览器上  通过response对象返回到浏览器上
-    response = HttpResponse(content_type='image/png')
-    response.write(out.read())
-    response['Content-length'] = out.tell()
-    cache.set(text.lower(), text.lower(), 5*60)  # 缓存中一份   用于做对比
-    return response
-
-def sms_captcha(request):
-    code = Captcha.gene_num()  # 生成随机数字 六位
-    print(code)
-
-    # 接收手机号
-    #/sms_captcha/?telephone=
-    telephone = request.GET.get('telephone')
-    # cache.set(telephone,code,5*60)  # 两分钟有效
-    print('cache中的验证码',cache.get(telephone))
-    # send_sms(telephone,code)
-    # 调用第三方发送短信验证码接口
-    return restful.success()
+# # 图形验证码
+# def image_captcha(request):
+#     text,image = Captcha.gene_graph_captcha()
+#     # 图片是一个流数据 也就是存到一个管道中 不像字符串可以用容器保存
+#     out = BytesIO()  # 创建一个管道
+#     image.save(out,'png')  # 图片保存
+#     # 读取时候从0开始读 为了防止读不到数据 指针回0
+#     out.seek(0)  # 指针回0
+#     # 把图片返回到浏览器上  通过response对象返回到浏览器上
+#     response = HttpResponse(content_type='image/png')
+#     response.write(out.read())
+#     response['Content-length'] = out.tell()
+#     cache.set(text.lower(), text.lower(), 5*60)  # 缓存中一份   用于做对比
+#     return response
+#
+# def sms_captcha(request):
+#     code = Captcha.gene_text(6)  # 生成随机数字 六位
+#     print("sssss:",code)
+#
+#     # 接收手机号
+#     #/sms_captcha/?telephone=
+#     telephone = request.GET.get('telephone')
+#     cache.set(str(telephone),code,60*60)  # 两分钟有效
+#     print('cache中的验证码',cache.get(telephone))
+#     send_sms(telephone,code)
+#     # 调用第三方发送短信验证码接口
+#     return restful.success()

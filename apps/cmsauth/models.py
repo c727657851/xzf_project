@@ -43,6 +43,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
+    thumbnail = models.URLField(default='http://qe0l8lesp.bkt.clouddn.com/1595858988624.jfif')
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'telephone'
     REQUIRED_FIELDS = ['username']
